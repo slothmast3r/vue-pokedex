@@ -1,19 +1,31 @@
 <template>
-  <div class="hello">
-      <ul id="example-1">
-            <li v-for="poke in props.pokeList" :key="poke.url">
-                {{ poke.name }}
-            </li>
+  <div class="poke__list">
+   <ul id="example-1">
+      <li v-for="item in pokeList.results" :key="item.name">
+        {{ item.name }}
+      </li>
 </ul>
+<button v-on:click="movePage(prev)">prev</button>
+
+<button>next</button>
   </div>
 </template>
 
 <script>
+import { bus } from '../main'
+
 export default {
   name: 'HelloWorld',
   props: {
-    pokeList: Array
+    pokeList: null
+  },
+  methods: {
+    movePage(direction) {
+      bus.$emit('moveList', direction)
+    }
   }
+
+ 
 }
 </script>
 

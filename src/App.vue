@@ -1,42 +1,54 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <li v-for="poke in props.pokeList" :key="poke.url">
-                {{ poke.name }}
-            </li>
+    <h1>POKEDEX</h1>
+    <PokeList :pokeList="pokeList" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import PokeList from './components/PokeList.vue'
-
-import axios from 'axios'
+// import HelloWorld from './components/HelloWorld.vue'
+import PokeList from "./components/PokeList.vue";
+import { bus } from "./main";
+import axios from "axios";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld,
-    PokeList
+    PokeList,
   },
   data() {
     return {
-      pokeList : []
+      pokeList: [],
+      offset:0,
+      limit:20
+    };
+  },
+  methods: {
+    loadPokes() {
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon/`)
+        .then((response) => {
+          this.pokeList = response.data;
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    updateList(direction) {
+      if(direction === "prev") {
+        console.log("Da")
+      }
     }
   },
-   created() {
-    axios.get(`https://pokeapi.co/api/v2/pokemon/`)
-    .then(response => {
-      // JSON responses are automatically parsed.
-      this.pokeList = response.data.resultes;
-      console.log(response.data)
+  created() {
+    this.loadPokes();
+    bus.$on('moveList', data => {
+       this.updateList(data)
     })
-    .catch(e => {
-      console.log(e)
-    })
-}
-}
+  },
+};
 </script>
 
 <style>
