@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <h1>POKEDEX</h1>
+    <h1 class="page-header">POKEDEX</h1>
     <PokeList  />
   </div>
 </template>
@@ -25,13 +25,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 80%;
+  margin: 0 auto;
+
+  .page-header{
+    text-align: center;
+  }
 }
 </style>
