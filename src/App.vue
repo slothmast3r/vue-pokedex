@@ -2,6 +2,7 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <h1 class="page-header">POKEDEX</h1>
+    <PokeFilter />
     <PokeList  />
   </div>
 </template>
@@ -9,11 +10,13 @@
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 import PokeList from "./components/PokeList.vue";
+import PokeFilter from "./components/PokeFilter.vue";
 
 export default {
   name: "App",
   components: {
     PokeList,
+    PokeFilter
   },
   data() {
     return {
