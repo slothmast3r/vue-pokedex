@@ -1,7 +1,10 @@
 <template>
 <div>
-<v-select  :items="selectFields"
-      label="Standard">
+<v-select  data-app
+v-if="selectFields != []"
+:items="this.selectFields"
+class="type-select"
+      label="Poke Type">
 </v-select>
 </div>
 </template>
@@ -24,15 +27,19 @@ export default {
                  return item.name
              })
              this.selectFields = typeName
-             console.log(typeName)
          }
      },
      created() {
          this.getFilterFields("https://pokeapi.co/api/v2/type");
+         console.log(this.selectFields)
      }
 }
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
+.type-select{
+    margin: 0 auto;
+    width: 50%;
+}
 </style>
