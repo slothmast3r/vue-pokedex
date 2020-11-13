@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div class="poke-list" v-if="pokeList != []">
-      <div class="poke-card" v-for="poke in pokeList.results" :key="poke.id">
-      
+    <div class="poke-list" v-if="pokeList != []" >
+      <div class="poke-card" v-for="poke in pokeList.results" :key="poke.id" @click="displayPokemonInfo()">
         <img
         class="poke-image"
           v-bind:src="imgUrl + pokeId(poke.url) + '.png'"
@@ -31,13 +30,14 @@ export default {
       limit: 20,
       imgUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
+      selectedPokeId: null,
+      SelectedPokeInfo: Object
     };
   },
   methods: {
     async loadPokes(url) {
       let res = await getFromUrl(url);
       this.pokeList = res;
-      console.log(this.pokeList);
     },
 
     pokeId(url) {
@@ -67,6 +67,12 @@ export default {
       this.MoveDirection = direction;
       bus.$emit("moveList", this.MoveDirection);
     },
+    async displayPokemonInfo(id) {
+        const pokeInfo = await getFromUrl(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        this.SelectedPokeInfo = pokeInfo;
+        console.log(this.SelectedPokeInfo)
+     
+    }
   },
   created() {
     this.loadPokes(
@@ -75,7 +81,7 @@ export default {
     bus.$on("moveList", (data) => {
       this.updateList(data);
     });
-    console.log(this.pokeList);
+    
   },
 };
 </script>
