@@ -1,8 +1,8 @@
 <template>
 <div>
-<v-select  data-app
-v-if="selectFields != []"
-:items="this.selectFields"
+<v-select data-app
+v-if="selectFields !== []"
+:items="selectFields.name"
 class="type-select"
       label="Poke Type">
 </v-select>
@@ -19,18 +19,19 @@ export default {
              selectFields: []
          }
      },
+    
      methods: {
          async getFilterFields(url) {
              let typesFromUrl = await getFromUrl(url);
              let typesRes = typesFromUrl.results;
-             let typeName = typesRes.map(item => {
-                 return item.name
-             })
-             this.selectFields = typeName
+            //  let typeName = typesRes.map(item => {
+            //      return item.name
+            //  })
+             this.selectFields = typesRes
          }
      },
-     created() {
-         this.getFilterFields("https://pokeapi.co/api/v2/type");
+   async created() {
+        await this.getFilterFields("https://pokeapi.co/api/v2/type");
          console.log(this.selectFields)
      }
 }

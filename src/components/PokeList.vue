@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="poke-list" v-if="pokeList != []" >
-      <div class="poke-card" v-for="poke in pokeList.results" :key="poke.id" @click="displayPokemonInfo()">
+      <div class="poke-card" v-for="poke in pokeList.results" :key="poke.name" @click="getPokemonInfo(poke.name)">
         <img
         class="poke-image"
           v-bind:src="imgUrl + pokeId(poke.url) + '.png'"
         />
-         <h5 class="poke-name"> {{ poke.name }} </h5> 
+         <h5 class="poke-name"> {{ poke.name }}  </h5> 
       </div>
     </div>
     <div class="list-pagination">
@@ -67,10 +67,11 @@ export default {
       this.MoveDirection = direction;
       bus.$emit("moveList", this.MoveDirection);
     },
-    async displayPokemonInfo(id) {
-        const pokeInfo = await getFromUrl(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    async getPokemonInfo(name) {
+        const pokeInfo = await getFromUrl(`https://pokeapi.co/api/v2/pokemon/${name}`);
         this.SelectedPokeInfo = pokeInfo;
-        console.log(this.SelectedPokeInfo)
+        bus.$emit("pokeInfo", this.SelectedPokeInfo);
+        // console.log(this.SelectedPokeInfo)
      
     }
   },
@@ -107,6 +108,7 @@ $breakpoint-mobile: 700px;
     border: 1px solid lightgray;
     border-radius: 10%;
     box-shadow: 0px 1px 10px lightgray;
+    cursor: pointer;
 
 .poke-image{
   margin: 10px 0 0 0;
