@@ -1,22 +1,26 @@
 <template>
 <div>
 <v-select data-app
-v-if="selectFields !== []"
-:items="selectFields.name"
-class="type-select"
+v-if="selectFields !== null"
+:items="selectFields"
       label="Poke Type">
 </v-select>
 </div>
 </template>
 
 <script>
-import getFromUrl from '../services/client'
+import getFromUrl from '../services/client';
+import vSelect from 'vue-select'
+import "vue-select/src/scss/vue-select.scss";
 
 export default {
      name: "PokeFilter",
+     components: {
+         vSelect,
+     },
      data() {
          return{
-             selectFields: []
+             selectFields: null,
          }
      },
     
@@ -24,10 +28,10 @@ export default {
          async getFilterFields(url) {
              let typesFromUrl = await getFromUrl(url);
              let typesRes = typesFromUrl.results;
-            //  let typeName = typesRes.map(item => {
-            //      return item.name
-            //  })
-             this.selectFields = typesRes
+             let typeName = typesRes.map(item => {
+                 return item.name
+             })
+             this.selectFields = typeName
          }
      },
    async created() {
