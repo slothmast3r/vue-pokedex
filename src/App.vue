@@ -9,12 +9,12 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import PokeList from "./components/PokeList.vue";
 import PokeFilter from "./components/PokeFilter.vue";
 import PokeDetails from "./components/PokeDetails.vue";
-
 import { bus } from "./main";
+
+// TODO - pokelist render refering to given URL - selecting pokemon will be possible 
 
 export default {
   name: "App",
