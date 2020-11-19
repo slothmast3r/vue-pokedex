@@ -22,6 +22,7 @@ import getFromUrl from "../services/client";
 
 export default {
   name: "PokeList",
+
   data() {
     return {
       MoveDirection: String,
@@ -31,7 +32,8 @@ export default {
       imgUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
       selectedPokeId: null,
-      SelectedPokeInfo: Object
+      SelectedPokeInfo: Object,
+      pokesType: String
     };
   },
   methods: {
@@ -82,8 +84,13 @@ export default {
     bus.$on("moveList", (data) => {
       this.updateList(data);
     });
-    
   },
+  mounted() {
+    bus.$on("pokesType", (data) => {
+      this.pokesType = data;
+      console.log(this.pokesType)
+    });
+  }
 };
 </script>
 

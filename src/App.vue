@@ -49,7 +49,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   width: 80%;
   margin: 0 auto;
-
   .page-header{
     text-align: center;
   }
