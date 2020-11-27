@@ -1,6 +1,6 @@
 <template>
-<div>
-<img v-if="pokeDetails !== undefined" v-bind:src="imgUrl + pokeDetails.id + '.png'"/>
+<div >
+<img  v-bind:src="imgUrl + pokeInfo.id + '.png'" @click="dupa"/>
 </div>
 </template>
 
@@ -11,13 +11,13 @@ export default {
      props: ['pokeInfo'],
      data() {
          return{
-             pokeDetails: this.pokeInfo,
                imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
          }
      },
-    
      methods: {
-       
+         dupa() {
+             console.log(this.pokeInfo)
+         }
      },
   
 }

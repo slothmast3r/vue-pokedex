@@ -1,19 +1,12 @@
 <template>
-  <div>
-    <div class="poke-list" v-if="pokeList != []" >
-      <div class="poke-card" v-for="poke in pokeList.results" :key="poke.name" @click="getPokemonInfo(poke.name)">
-        <img
-        class="poke-image"
-          v-bind:src="imgUrl + pokeId(poke.url) + '.png'"
-        />
-         <h5 class="poke-name"> {{ poke.name }}  </h5> 
-      </div>
-    </div>
-    <div class="list-pagination">
-    <button class="list-pagination-button" v-on:click="movePage('prev')">Prev</button>
-    <button class="list-pagination-button" v-on:click="movePage('next')">Next</button>
-    </div>
+<div>
+
+  <div v-for="poke in pokeList" :key="poke">
+      {{poke}}
   </div>
+      
+
+      </div>
 </template>
 
 <script>
@@ -22,7 +15,7 @@ import getFromUrl from "../services/client";
 
 export default {
   name: "PokeList",
-
+ props: ['pokesType'],
   data() {
     return {
       MoveDirection: String,
@@ -33,13 +26,14 @@ export default {
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
       selectedPokeId: null,
       SelectedPokeInfo: Object,
-      pokesType: String
     };
   },
   methods: {
     async loadPokes(url) {
       let res = await getFromUrl(url);
-      this.pokeList = res;
+      this.pokeList =  res.map(wrapper => {
+          wrapper.name
+      });
     },
     pokeId(url) {
       return url
@@ -77,7 +71,7 @@ export default {
   },
   created() {
     this.loadPokes(
-      `https://pokeapi.co/api/v2/pokemon/?offset=${this.offset}&limit=${this.limit}`
+      `https://pokeapi.co/api/v2/type/${this.pokesType}/pokemon`
     );
     bus.$on("moveList", (data) => {
       this.updateList(data);
