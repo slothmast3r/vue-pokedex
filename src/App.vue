@@ -34,7 +34,7 @@ export default {
       offset: 0,
       limit: 20,
       pokeInfo: Object,
-      pokesType: String
+      pokesType: 'normal'
     };
   },
   methods:{

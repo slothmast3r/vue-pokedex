@@ -1,11 +1,13 @@
 <template>
-<div>
-
-  <div v-for="poke in pokeList" :key="poke">
-      {{poke}}
+<div class="poke-list">
+    
+  <div class="poke-card"  v-for="poke in pokeList" :key="poke">
+         <img
+        class="poke-image"
+          v-bind:src="imgUrl + pokeId(poke.url) + '.png'"
+        />
+      <h5  class="poke-name"> {{poke.name}} </h5>
   </div>
-      
-
       </div>
 </template>
 
@@ -13,6 +15,7 @@
 import { bus } from "../main";
 import getFromUrl from "../services/client";
 
+//  NEED FIXES
 export default {
   name: "PokeList",
  props: ['pokesType'],
@@ -31,9 +34,7 @@ export default {
   methods: {
     async loadPokes(url) {
       let res = await getFromUrl(url);
-      this.pokeList =  res.map(wrapper => {
-          wrapper.name
-      });
+      this.pokeList = res.pokemon.map((wrapper) => wrapper.pokemon)  
     },
     pokeId(url) {
       return url
@@ -70,17 +71,18 @@ export default {
     }
   },
   created() {
+       bus.$on("pokesType", (data) => {
+      this.pokesType = data;
+    });
     this.loadPokes(
-      `https://pokeapi.co/api/v2/type/${this.pokesType}/pokemon`
+      `https://pokeapi.co/api/v2/type/${this.pokesType}`
     );
     bus.$on("moveList", (data) => {
       this.updateList(data);
     });
   },
   mounted() {
-    bus.$on("pokesType", (data) => {
-      this.pokesType = data;
-    });
+   
   }
 };
 </script>

@@ -1,6 +1,9 @@
 <template>
 <div >
 <img  v-bind:src="imgUrl + pokeInfo.id + '.png'" @click="dupa"/>
+<div>
+    <h3>{{pokeInfo.name}}</h3>
+</div>
 </div>
 </template>
 
