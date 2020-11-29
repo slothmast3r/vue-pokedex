@@ -1,40 +1,48 @@
 <template>
+<div>
 <div class="poke-list">
     
-  <div class="poke-card"  v-for="poke in pokeList" :key="poke">
+  <div class="poke-card"  v-bind:key="poke.name" v-for="poke in pokeList.slice(offset,offset+ LIMIT)" @click="getPokemonInfo(poke.name)">
          <img
         class="poke-image"
           v-bind:src="imgUrl + pokeId(poke.url) + '.png'"
+           onerror="this.src='https://www.flaticon.com/svg/static/icons/svg/188/188918.svg'" height="80px"
         />
       <h5  class="poke-name"> {{poke.name}} </h5>
   </div>
+  
       </div>
+       <div class="list-pagination">
+    <button class="list-pagination-button" v-on:click="updateList('prev')">Prev</button>
+    <button class="list-pagination-button" v-on:click="updateList('next')">Next</button>
+    </div>
+</div>
 </template>
 
 <script>
 import { bus } from "../main";
 import getFromUrl from "../services/client";
-
 //  NEED FIXES
 export default {
   name: "PokeList",
- props: ['pokesType'],
+ props: ['propsPokesType'],
   data() {
     return {
       MoveDirection: String,
       pokeList: [],
       offset: 0,
-      limit: 20,
+      LIMIT: 20,
       imgUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
       selectedPokeId: null,
       SelectedPokeInfo: Object,
+      pokesType: this.propsPokesType
     };
   },
   methods: {
     async loadPokes(url) {
       let res = await getFromUrl(url);
-      this.pokeList = res.pokemon.map((wrapper) => wrapper.pokemon)  
+      this.pokeList = res.pokemon.map((wrapper) => wrapper.pokemon)
     },
     pokeId(url) {
       return url
@@ -44,42 +52,33 @@ export default {
         })
         .pop();
     },
-
     updateList(direction) {
-      if (direction === "prev" && this.offset - this.limit >= 0) {
+      if (direction === "prev" && this.offset - this.LIMIT >= 0) {
         this.offset -= 20;
-        this.loadPokes(
-          `https://pokeapi.co/api/v2/pokemon/?offset=${this.offset}&limit=${this.limit}`
-        );
       }
-      if (direction === "next" && this.offset + this.limit < 1050) {
+      if (direction === "next" && this.offset + this.LIMIT < this.pokeList.length) {
         this.offset += 20;
-        this.loadPokes(
-          `https://pokeapi.co/api/v2/pokemon/?offset=${this.offset}&limit=${this.limit}`
-        );
       }
-    },
-    movePage(direction) {
-      this.MoveDirection = direction;
-      bus.$emit("moveList", this.MoveDirection);
     },
     async getPokemonInfo(name) {
         const pokeInfo = await getFromUrl(`https://pokeapi.co/api/v2/pokemon/${name}`);
         this.SelectedPokeInfo = pokeInfo;
         bus.$emit("pokeInfo", this.SelectedPokeInfo);
-     
     }
   },
   created() {
        bus.$on("pokesType", (data) => {
       this.pokesType = data;
+       this.loadPokes(
+      `https://pokeapi.co/api/v2/type/${this.pokesType}`
+    );
     });
+    bus.$on("resetOffset", (data) => {
+      this.offset = data;
+    })
     this.loadPokes(
       `https://pokeapi.co/api/v2/type/${this.pokesType}`
     );
-    bus.$on("moveList", (data) => {
-      this.updateList(data);
-    });
   },
   mounted() {
    
@@ -112,6 +111,7 @@ $breakpoint-mobile: 700px;
 
 .poke-image{
   margin: 10px 0 0 0;
+  min-height: 100px;
 }
   .poke-name::first-letter {
     text-transform:  capitalize;

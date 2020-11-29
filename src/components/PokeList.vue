@@ -20,6 +20,7 @@
 import { bus } from "../main";
 import getFromUrl from "../services/client";
 
+
 export default {
   name: "PokeList",
 
