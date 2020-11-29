@@ -6,7 +6,7 @@
     <div v-else>
       <PokeFilter />
       <PokeList v-if="pokesType === 'normal' || undefined" />
-      <PokeListByType v-else :propsPokesType="pokesType" />
+      <PokeListByType v-else :propsPokesType="pokesType" :key="pokesType" />
     </div>
   </div>
 </template>

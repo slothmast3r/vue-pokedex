@@ -67,15 +67,15 @@ export default {
     }
   },
   created() {
-       bus.$on("pokesType", (data) => {
+    bus.$on("pokesType", (data) => {
       this.pokesType = data;
        this.loadPokes(
       `https://pokeapi.co/api/v2/type/${this.pokesType}`
     );
     });
-    bus.$on("resetOffset", (data) => {
-      this.offset = data;
-    })
+    // bus.$on("resetOffset", (data) => {
+    //   this.offset = data;
+    // })
     this.loadPokes(
       `https://pokeapi.co/api/v2/type/${this.pokesType}`
     );

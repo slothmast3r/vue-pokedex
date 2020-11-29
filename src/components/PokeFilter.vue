@@ -39,7 +39,7 @@ export default {
     getSelectedField(e) {
       this.slectedType = e.target.value;
       bus.$emit("pokesType", this.slectedType);
-      bus.$emit("resetOffset", 0);
+      // bus.$emit("resetOffset", 0);
     },
   },
   async created() {
